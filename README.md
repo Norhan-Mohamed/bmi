@@ -1,16 +1,38 @@
-# week10new
+# BMI Calculator
 
-A new Flutter project.
+A simple Flutter BMI calculator for portfolio use.
 
-## Getting Started
+**Started:** 15 October 2023
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- Select male or female
+- Adjust height with a slider
+- Adjust weight and age with increment buttons
+- Calculate BMI and view category plus guidance text
+- Recalculate from the results screen
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Getting started
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter pub get
+flutter run
+```
+
+## Tests
+
+```bash
+flutter test
+flutter analyze
+```
+
+## Project structure
+
+```text
+lib/
+  main.dart            App entry point and theme
+  home_screen.dart     Input screen
+  results_page.dart    BMI result screen
+  bmi_calculator.dart  BMI calculation logic
+  constants.dart       Shared colors and limits
+```

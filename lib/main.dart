@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:week10new/result.dart';
 
-import 'calculate.dart';
-import 'homeScreen.dart';
+import 'constants.dart';
+import 'home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const BmiApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class BmiApp extends StatelessWidget {
+  const BmiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyHomePage(),
+      title: 'BMI Calculator',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: AppColors.background,
+        primaryColor: AppColors.accent,
+      ),
+      home: const HomeScreen(),
     );
   }
 }

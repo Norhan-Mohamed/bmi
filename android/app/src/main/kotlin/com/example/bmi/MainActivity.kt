@@ -1,4 +1,4 @@
-package com.example.week10new
+package com.example.bmi
 
 import io.flutter.embedding.android.FlutterActivity
 

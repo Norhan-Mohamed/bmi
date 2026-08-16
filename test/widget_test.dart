@@ -1,30 +1,72 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:bmi/bmi_calculator.dart';
+import 'package:bmi/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:week10new/main.dart';
-
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('BmiCalculator', () {
+    test('classifies underweight correctly', () {
+      final calc = BmiCalculator(heightCm: 170, weightKg: 45);
+      expect(calc.result, 'Underweight');
+      expect(double.parse(calc.bmiValue), lessThan(18.5));
+    });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    test('classifies normal weight correctly', () {
+      final calc = BmiCalculator(heightCm: 170, weightKg: 65);
+      expect(calc.result, 'Normal');
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    test('classifies overweight correctly', () {
+      final calc = BmiCalculator(heightCm: 170, weightKg: 90);
+      expect(calc.result, 'Overweight');
+      expect(double.parse(calc.bmiValue), greaterThanOrEqualTo(25));
+    });
+
+    test('uses consistent boundary at 18.5', () {
+      final calc = BmiCalculator(heightCm: 100, weightKg: 18.5);
+      expect(calc.result, 'Normal');
+      expect(calc.interpretation.contains('normal body weight'), isTrue);
+    });
+  });
+
+  testWidgets('home screen loads and opens results', (tester) async {
+    await tester.pumpWidget(const BmiApp());
+
+    expect(find.text('BMI CALCULATOR'), findsOneWidget);
+    expect(find.text('HEIGHT'), findsOneWidget);
+    expect(find.text('CALCULATE'), findsOneWidget);
+
+    await tester.tap(find.text('CALCULATE'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Your Result'), findsOneWidget);
+    expect(find.text('RE-CALCULATE'), findsOneWidget);
+
+    await tester.tap(find.text('RE-CALCULATE'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('CALCULATE'), findsOneWidget);
+  });
+
+  testWidgets('gender selection updates selected card', (tester) async {
+    await tester.pumpWidget(const BmiApp());
+
+    await tester.tap(find.text('FEMALE'));
+    await tester.pump();
+    await tester.tap(find.text('MALE'));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('MALE'), findsOneWidget);
+    expect(find.text('FEMALE'), findsOneWidget);
+  });
+
+  testWidgets('weight buttons change displayed value', (tester) async {
+    await tester.pumpWidget(const BmiApp());
+
+    expect(find.text('60'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.add).first);
+    await tester.pump();
+    expect(find.text('61'), findsOneWidget);
   });
 }
